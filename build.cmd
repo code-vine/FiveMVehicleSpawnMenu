@@ -5,12 +5,12 @@ set "OUTDIR=C:\FXServer\txData\FiveMServer.base\resources\[local]\vehicle_menu"
 
 :: Build Client
 pushd Client
-dotnet build -c Release
+dotnet publish -c Release
 popd
 
 :: Build Server
 pushd Server
-dotnet build -c Release
+dotnet publish -c Release
 popd
 
 :: Reset destination directory
