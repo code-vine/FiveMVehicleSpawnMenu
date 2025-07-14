@@ -130,9 +130,6 @@ window.addEventListener("keydown", (event) => {
 window.addEventListener("message", (event) => {
     if (event.data.type === "show") {
         if (event.data.vehicles) {
-
-            Object.keys(event.data.vehicles).forEach(c => console.log("Available category:", c));
-
             allVehicleData = event.data.vehicles;
             renderCategories(allVehicleData);
             document.body.style.display = "block";
