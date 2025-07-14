@@ -15,7 +15,6 @@ files {
   'html/app.js',
   'html/images/*.webp',
   'Client/Newtonsoft.Json.dll',
-  'Client/Data/*.json'
 }
 
 
