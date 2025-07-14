@@ -12,22 +12,11 @@ namespace VehicleMenu.Client
     public class VehicleMenuClient : BaseScript
     {
         private Dictionary<string, List<VehicleData>> _categorizedVehicles;
+        private List<string> _allVehicleModels;
         public VehicleMenuClient()
         {
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    _categorizedVehicles = GetCategorizedVehicles();
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"Failed to load vehicles: {ex.Message}");
-                }
-            });
+            LoadVehicleData();
 
-            string json = API.LoadResourceFile(API.GetCurrentResourceName(), "vehicles.json");
-            JsonConvert.DeserializeObject<List<string>>(json);
             // Register the spawn_vehicle callback
             RegisterNuiCallbackType("spawn_vehicle");
             EventHandlers["__cfx_nui:spawn_vehicle"] += new Action<IDictionary<string, object>, CallbackDelegate>(SpawnVehicle);
@@ -53,6 +42,24 @@ namespace VehicleMenu.Client
             RegisterSpawnCarCommand();
         }
 
+        private void LoadVehicleData()
+        {
+
+            string json = API.LoadResourceFile(API.GetCurrentResourceName(), "vehicles.json");
+            _allVehicleModels = JsonConvert.DeserializeObject<List<string>>(json);
+
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    _categorizedVehicles = GetCategorizedVehicles();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Failed to load vehicles: {ex.Message}");
+                }
+            });
+        }
 
         private void SpawnVehicle(IDictionary<string, object> data, CallbackDelegate cb)
         {
@@ -127,7 +134,7 @@ namespace VehicleMenu.Client
             Dictionary<string, List<VehicleData>> categorizedVehicles = new Dictionary<string, List<VehicleData>>();
 
 
-            foreach (var vehicleObj in GetAllVehicleModels())
+            foreach (var vehicleObj in _allVehicleModels)
             {
                 try
                 {
