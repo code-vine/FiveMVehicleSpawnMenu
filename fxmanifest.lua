@@ -3,8 +3,8 @@ fx_version 'cerulean'  -- or bodacious, but cerulean is recommended for NUI
 game 'gta5'
 
 -- .NET scripts
-client_script 'Client/bin/Release/net452/publish/*.net.dll'
---server_script 'Server/bin/Release/net452/publish/*.net.dll'
+client_script 'Client/*.net.dll'
+server_script 'Server/*.net.dll'
 
 -- NUI UI
 ui_page 'html/index.html'
@@ -14,7 +14,7 @@ files {
   'html/style.css',
   'html/app.js',
   'html/images/*.webp',
-  'Newtonsoft.Json.dll'
+  'Client/Newtonsoft.Json.dll'
 }
 
 
