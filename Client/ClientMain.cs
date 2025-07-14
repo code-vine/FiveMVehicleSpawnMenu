@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using Newtonsoft.Json;
 using VehicleMenu.Client.DataModels;
 using static CitizenFX.Core.Native.API;
@@ -24,38 +25,12 @@ namespace VehicleMenu.Client
                     Debug.WriteLine($"Failed to load vehicles: {ex.Message}");
                 }
             });
+
+            string json = API.LoadResourceFile(API.GetCurrentResourceName(), "vehicles.json");
+            JsonConvert.DeserializeObject<List<string>>(json);
             // Register the spawn_vehicle callback
             RegisterNuiCallbackType("spawn_vehicle");
-            EventHandlers["__cfx_nui:spawn_vehicle"] += new Action<IDictionary<string, object>, CallbackDelegate>((data, cb) =>
-            {
-                string result = "success";
-
-                try
-                {
-                    if (data != null && data.TryGetValue("model", out var modelObj))
-                    {
-                        string model = modelObj?.ToString() ?? "";
-                        if (!string.IsNullOrEmpty(model))
-                        {
-                            ExecuteCommand($"spawncar {model}");
-                        }
-                        else
-                        {
-                            result = "invalid_model";
-                        }
-                    }
-                    else
-                    {
-                        result = "missing_model";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    result = $"error: {ex.Message}";
-                }
-
-                cb(new { status = result });
-            });
+            EventHandlers["__cfx_nui:spawn_vehicle"] += new Action<IDictionary<string, object>, CallbackDelegate>(SpawnVehicle);
 
 
             RegisterNuiCallbackType("close_menu");
@@ -76,6 +51,36 @@ namespace VehicleMenu.Client
 
 
             RegisterSpawnCarCommand();
+        }
+
+
+        private void SpawnVehicle(IDictionary<string, object> data, CallbackDelegate cb)
+        {
+            string result = "success";
+            try
+            {
+                if (data != null && data.TryGetValue("model", out var modelObj))
+                {
+                    string model = modelObj?.ToString() ?? "";
+                    if (!string.IsNullOrEmpty(model))
+                    {
+                        ExecuteCommand($"spawncar {model}");
+                    }
+                    else
+                    {
+                        result = "invalid_model";
+                    }
+                }
+                else
+                {
+                    result = "missing_model";
+                }
+            }
+            catch (Exception ex)
+            {
+                result = $"error: {ex.Message}";
+            }
+            cb(new { status = result });
         }
 
         private void RegisterSpawnCarCommand()
@@ -120,6 +125,7 @@ namespace VehicleMenu.Client
         private Dictionary<string, List<VehicleData>> GetCategorizedVehicles()
         {
             Dictionary<string, List<VehicleData>> categorizedVehicles = new Dictionary<string, List<VehicleData>>();
+
 
             foreach (var vehicleObj in GetAllVehicleModels())
             {
