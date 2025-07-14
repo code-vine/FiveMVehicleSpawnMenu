@@ -66,6 +66,7 @@ function renderCategories(vehicleData, query = "") {
             row.className = "vehicle-entry row align-items-center mb-2";
             row.innerHTML = `
                 <div class="vehicle-entry">
+                    <h5 class="vehicle-name">${vehicle.displayName || vehicle.name}</h5>
                     <img src="images/${vehicle.image}" alt="${vehicle.displayName || vehicle.name}" class="img-fluid" loading="lazy">
                     <button class="btn btn-sm" onclick="spawnVehicle('${vehicle.name}')">
                         Spawn
