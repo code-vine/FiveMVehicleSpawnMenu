@@ -140,24 +140,9 @@ namespace VehicleMenu.Client
                     uint hash = (uint)GetHashKey(modelName); // ✅ Convert string to hash
 
                     string label = GetLabelText(GetDisplayNameFromVehicleModel(hash));
-                    string vehicleClass = GetVehicleClassFromModel(hash);
+                    string category = GetVehicleClassFromModel(hash);
 
                     if (string.IsNullOrEmpty(label)) label = modelName;
-
-                    string category;
-                    switch (vehicleClass)
-                    {
-                        case "Super": category = "Super"; break;
-                        case "Sports": category = "Sports"; break;
-                        case "Off-Road": category = "Offroad"; break;
-                        case "Emergency": category = "Emergency"; break;
-                        case "Boats": category = "Boats"; break;
-                        case "Planes": category = "Planes"; break;
-                        case "Helicopters": category = "Helicopters"; break;
-                        case "Trains": category = "Trains"; break;
-                        default: category = "Misc"; break;
-                    }
-
 
                     var vehicleData = new VehicleData
                     {
