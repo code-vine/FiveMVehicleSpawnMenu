@@ -112,7 +112,7 @@ function closeMenu() {
 }
 
 window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
+    if (event.key === "Escape" || event.key === "F3") {
         closeMenu();
     }
 });
