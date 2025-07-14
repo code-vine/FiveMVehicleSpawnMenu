@@ -30,13 +30,14 @@ function renderCategories(vehicleData, query = "") {
             ? vehicles.filter(v =>
                 (v.name && v.name.toLowerCase().includes(query)) ||
                 (v.displayName && v.displayName.toLowerCase().includes(query)) ||
-                (v.category && v.category.toLowerCase().includes(query))
+                (v.category && v.category.replace(/\s+/g, "").toLowerCase().includes(query.replace(/\s+/g, "")))
+
             )
             : vehicles;
 
         if (filteredVehicles.length === 0) return;
 
-        const tabId = `tab-${category.toLowerCase()}`;
+        const tabId = `tab-${category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
         const active = index === 0 ? "active" : "";
 
         // Create tab
@@ -45,7 +46,7 @@ function renderCategories(vehicleData, query = "") {
         tab.innerHTML = `
             <a class="nav-link ${active}" id="${tabId}-tab" data-bs-toggle="tab"
                href="#${tabId}" role="tab" aria-controls="${tabId}" aria-selected="${active === "active"}" tabindex="0">
-                ${category}
+                ${toTitleCase(category)}
             </a>
         `;
         tabContainer.appendChild(tab);
@@ -85,6 +86,15 @@ function renderCategories(vehicleData, query = "") {
     contentContainerEl.appendChild(contentContainer);
 }
 
+function toTitleCase(str) {
+    return str
+        .toLowerCase()
+        .split(" ")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+}
+
+
 function spawnVehicle(model) {
     fetch(`https://${GetParentResourceName()}/spawn_vehicle`, {
         method: "POST",
@@ -120,6 +130,9 @@ window.addEventListener("keydown", (event) => {
 window.addEventListener("message", (event) => {
     if (event.data.type === "show") {
         if (event.data.vehicles) {
+
+            Object.keys(event.data.vehicles).forEach(c => console.log("Available category:", c));
+
             allVehicleData = event.data.vehicles;
             renderCategories(allVehicleData);
             document.body.style.display = "block";
