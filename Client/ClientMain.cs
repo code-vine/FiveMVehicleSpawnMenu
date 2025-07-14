@@ -12,7 +12,7 @@ namespace VehicleMenu.Client
     public class VehicleMenuClient : BaseScript
     {
         private Dictionary<string, List<VehicleData>> _categorizedVehicles = new Dictionary<string, List<VehicleData>>();
-
+        
         public VehicleMenuClient()
         {
             LoadVehicleData();
@@ -132,12 +132,8 @@ namespace VehicleMenu.Client
             {
                 try
                 {
-                    if (string.IsNullOrEmpty(vehicleObj))
-                    {
-                        Debug.WriteLine($"[CarSpawner]: vehObj is {vehicleObj} ");
-                    }
                     string modelName = vehicleObj.ToString();
-                   
+
                     uint hash = (uint)GetHashKey(modelName); //Convert string to hash
 
                     string label = GetLabelText(GetDisplayNameFromVehicleModel(hash));
