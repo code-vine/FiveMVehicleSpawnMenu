@@ -131,8 +131,6 @@ namespace VehicleMenu.Client
 
         private Dictionary<string, List<VehicleData>> GetCategorizedVehicles()
         {
-            Dictionary<string, List<VehicleData>> categorizedVehicles = new Dictionary<string, List<VehicleData>>();
-
 
             foreach (var vehicleObj in _allVehicleModels)
             {
@@ -169,10 +167,10 @@ namespace VehicleMenu.Client
                         Image = $"{modelName.ToLower()}.webp",
                     };
 
-                    if (!categorizedVehicles.ContainsKey(category))
-                        categorizedVehicles[category] = new List<VehicleData>();
+                    if (!_categorizedVehicles.ContainsKey(category))
+                        _categorizedVehicles[category] = new List<VehicleData>();
 
-                    categorizedVehicles[category].Add(vehicleData);
+                    _categorizedVehicles[category].Add(vehicleData);
                 }
                 catch (Exception ex)
                 {
@@ -180,7 +178,7 @@ namespace VehicleMenu.Client
                 }
             }
 
-            return categorizedVehicles;
+            return _categorizedVehicles;
         }
 
         private string GetVehicleClassFromModel(uint modelHash)

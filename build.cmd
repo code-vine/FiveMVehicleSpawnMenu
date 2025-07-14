@@ -27,3 +27,4 @@ xcopy /y /e Server\bin\Release\netstandard2.0\publish "%OUTDIR%\Server\"
 
 :: ✅ Copy NUI HTML assets
 xcopy /y /e Client\html "%OUTDIR%\html\"
+xcopy /y /e Client\Data "%OUTDIR%\Data\"

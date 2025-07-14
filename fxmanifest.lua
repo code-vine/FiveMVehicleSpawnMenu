@@ -14,7 +14,8 @@ files {
   'html/style.css',
   'html/app.js',
   'html/images/*.webp',
-  'Client/Newtonsoft.Json.dll'
+  'Client/Newtonsoft.Json.dll',
+  'Cilent/Data/*.json'
 }
 
 
