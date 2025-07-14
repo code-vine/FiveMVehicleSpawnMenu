@@ -1,0 +1,34 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Vehicle Menu</title>
+
+    <!-- Bootstrap for tab layout and styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Your custom CSS and JS -->
+    <script src="https://cfx-nui-vehicle_menu/html/app.js" defer></script>
+    <link rel="stylesheet" href="https://cfx-nui-vehicle_menu/html/style.css" />
+
+</head>
+<body style="display: none;">
+    <div class="laptop-frame container mt-4">
+        <div class="screen">
+            <h2>🚗 Vehicle Spawner</h2>
+            <input type="text" id="vehicle-search" class="form-control mb-3" placeholder="Search vehicles..." />
+
+            <!-- Tab Navigation -->
+            <div class="vehicle-tabs">
+                <ul class="nav nav-tabs" id="tab-container"></ul>
+                <div class="tab-content" id="tab-content-container"></div>
+            </div>
+
+            <!-- Close Button -->
+            <button onclick="closeMenu()" class="close-btn">Close</button>
+        </div>
+    </div>
+</body>
+</html>
