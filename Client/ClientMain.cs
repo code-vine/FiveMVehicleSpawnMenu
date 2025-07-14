@@ -11,8 +11,8 @@ namespace VehicleMenu.Client
 {
     public class VehicleMenuClient : BaseScript
     {
-        private Dictionary<string, List<VehicleData>> _categorizedVehicles;
-        private List<string> _allVehicleModels;
+        private Dictionary<string, List<VehicleData>> _categorizedVehicles = new Dictionary<string, List<VehicleData>>();
+
         public VehicleMenuClient()
         {
             LoadVehicleData();
@@ -44,9 +44,6 @@ namespace VehicleMenu.Client
 
         private void LoadVehicleData()
         {
-
-            string json = API.LoadResourceFile(API.GetCurrentResourceName(), "vehicles.json");
-            _allVehicleModels = JsonConvert.DeserializeObject<List<string>>(json);
 
             Task.Factory.StartNew(() =>
             {
@@ -102,14 +99,13 @@ namespace VehicleMenu.Client
                 }
 
                 // check if the model actually exists
-                // assumes the directive `using static CitizenFX.Core.Native.API;`
                 var hash = (uint)GetHashKey(model);
                 if (!IsModelInCdimage(hash) || !IsModelAVehicle(hash))
                 {
                     TriggerEvent("chat:addMessage", new
                     {
                         color = new[] { 255, 0, 0 },
-                        args = new[] { "[CarSpawner]", $"It might have been a good thing that you tried to spawn a {model}. Who even wants their spawning to actually ^*succeed?" }
+                        args = new[] { "[CarSpawner]", $"Cannot spawn a {model}!" }
                     });
                     return;
                 }
@@ -124,7 +120,7 @@ namespace VehicleMenu.Client
                 TriggerEvent("chat:addMessage", new
                 {
                     color = new[] { 255, 0, 0 },
-                    args = new[] { "[CarSpawner]", $"Woohoo! Enjoy your new ^*{model}!" }
+                    args = new[] { "[CarSpawner]", $"Enjoy your new ^*{model}!" }
                 });
             }), false);
         }
@@ -132,12 +128,17 @@ namespace VehicleMenu.Client
         private Dictionary<string, List<VehicleData>> GetCategorizedVehicles()
         {
 
-            foreach (var vehicleObj in _allVehicleModels)
+            foreach (var vehicleObj in GetAllVehicleModels())
             {
                 try
                 {
+                    if (string.IsNullOrEmpty(vehicleObj))
+                    {
+                        Debug.WriteLine($"[CarSpawner]: vehObj is {vehicleObj} ");
+                    }
                     string modelName = vehicleObj.ToString();
-                    uint hash = (uint)GetHashKey(modelName); // ✅ Convert string to hash
+                   
+                    uint hash = (uint)GetHashKey(modelName); //Convert string to hash
 
                     string label = GetLabelText(GetDisplayNameFromVehicleModel(hash));
                     string category = GetVehicleClassFromModel(hash);
@@ -159,7 +160,7 @@ namespace VehicleMenu.Client
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($"Failed to spawn vehicle: {vehicleObj} → {ex.Message}");
+                    Debug.WriteLine($"Failed to categorize vehicle: {vehicleObj} → {ex.Message}");
                 }
             }
 
