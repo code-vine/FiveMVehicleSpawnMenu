@@ -14,7 +14,8 @@ A modern, user-friendly FiveM NUI vehicle spawner for GTA V, built with C# (.NET
 
 ## Screenshots
 
-![Vehicle Menu Screenshot](docs/screenshot.png) <!-- Add your screenshot here -->
+![Vehicle Menu Screenshot 1](docs/screenshot1.png) 
+![Vehicle Menu Screenshot 2](docs/screenshot2.png) 
 
 ## Installation
 
